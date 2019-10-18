@@ -4,6 +4,8 @@ This is a simple game. Try to guess as many Bohdi language words that you can. I
 
 Use the "Cheat!" button to see the list of words... but it will cost you 2 points every time you do.
 
+[Try it out!](https://pairshaped.github.io/bohdilang/)
+
 ## Installing Dependencies
 
 ```
@@ -15,6 +17,15 @@ yarn
 ```
 yarn start
 ```
+
+## Roadmap
+
+In the `json` branch, the words list is retrieved via REST endpoint (uses json-server).
+
+1. Use Firebase to store words.
+2. UI to add new words to the dictionary.
+3. Multi-tenant, allow users to create their own account with a unique handle and their own word lists.
+4. Leaderboard shwoing hi scores per logged in user (by handle).
 
 ## Source
 <https://github.com/pairshaped/bohdilang>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Simple kids game where you have to guess the words of an obscure language.">
   <title>Bohdilang</title>
   <script src="https://pairshaped.github.io/bohdilang/prod.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -18,14 +19,12 @@
     }
   </style>
 </head>
-<body class="bg-secondary">
+<body>
   <div id="app"></div>
   <script>
-    var app = Elm.Main.init(
-      {
-        node: document.getElementById("app")
-      }
-    )
+    Elm.Main.init({
+      node: document.getElementById("app")
+    })
   </script>
 </body>
 </html>

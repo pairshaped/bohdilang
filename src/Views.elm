@@ -12,12 +12,12 @@ import Words exposing (words)
 view : Model -> Html Msg
 view model =
     div
-        [ class "bg-secondary container-fluid"
+        [ class "container-fluid"
         ]
         [ div
             [ class "row justify-content-center" ]
             [ div
-                [ class "col bg-white mt-sm-4 mb-sm-4 p-2", style "max-width" "360px" ]
+                [ class "col border mt-sm-4 mb-sm-4 p-3", style "max-width" "360px" ]
                 [ if model.showWords then
                     viewWords
 
@@ -59,7 +59,6 @@ viewTranslator model =
         , div [ class "d-flex justify-content-between" ]
             [ button
                 [ class "mt-2 btn btn-secondary"
-                , disabled (model.score == 0)
                 , onClick Restart
                 ]
                 [ text "Restart" ]

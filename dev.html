@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bohdilang</title>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script src="dev.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="icon" href="data:;base64,iVBORwOKGO=" />
@@ -16,16 +17,21 @@
     .btn {
       min-width: 80px;
     }
+    footer {
+      text-align: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
-<body class="bg-secondary">
+<body>
   <div id="app"></div>
   <script>
-    var app = Elm.Main.init(
-      {
-        node: document.getElementById("app")
-      }
-    )
+    Elm.Main.init({
+      node: document.getElementById("app")
+    })
   </script>
+  <footer>
+    <a class="github-button" href="https://github.com/pairshaped/bohdilang" data-icon="octicon-star" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
+  </footer>
 </body>
 </html>
