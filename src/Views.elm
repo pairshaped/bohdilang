@@ -42,7 +42,11 @@ viewTranslator model =
                 "secondary"
     in
     div []
-        [ h1 [ class "mb-3 text-warning" ] [ text "Bohdilang" ]
+        [ div
+            [ class "d-flex justify-content-between mb-3" ]
+            [ h1 [ class "text-warning" ] [ text "Bohdilang" ]
+            , h1 [ class ("border pl-2 pr-2 text-" ++ scoreClass) ] [ text (String.fromInt model.score) ]
+            ]
         , p [ class "mt-2" ]
             [ span [] [ text "You " ]
             , span [ class "text-success" ] [ text "get a point" ]
@@ -64,7 +68,6 @@ viewTranslator model =
                 [ text "Restart" ]
             , div [ class "mt-2" ] [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Cheat!" ] ]
             ]
-        , div [ class ("mt-2 display-2 text-center text-" ++ scoreClass) ] [ text (String.fromInt model.score) ]
         ]
 
 

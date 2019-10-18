@@ -20,7 +20,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Restart ->
-            ( { model | input = "", output = "", score = 0 }, Cmd.none )
+            ( { model | input = "", output = "", score = 0, completedWords = [] }, Cmd.none )
 
         ToggleWords ->
             let
