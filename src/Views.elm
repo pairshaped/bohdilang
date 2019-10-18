@@ -4,10 +4,9 @@ import Helpers exposing (..)
 import Html exposing (Html, button, div, h1, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, style, type_, value)
 import Html.Events exposing (onBlur, onClick, onInput)
-import Html.Events.Extra exposing (onClickPreventDefault)
 import Http
-import RemoteData exposing (RemoteData(..))
 import Types exposing (..)
+import Words exposing (words)
 
 
 view : Model -> Html Msg
@@ -19,55 +18,13 @@ view model =
             [ class "row justify-content-center" ]
             [ div
                 [ class "col bg-white mt-sm-4 mb-sm-4 p-2", style "max-width" "360px" ]
-                [ case model.data of
-                    NotAsked ->
-                        viewNotReady "Initializing..."
+                [ if model.showWords then
+                    viewWords
 
-                    Loading ->
-                        viewNotReady "Loading..."
-
-                    Failure error ->
-                        let
-                            errorMessage =
-                                case error of
-                                    Http.BadUrl string ->
-                                        "Bad URL: " ++ string
-
-                                    Http.Timeout ->
-                                        "Network timeout"
-
-                                    Http.NetworkError ->
-                                        "Network error"
-
-                                    Http.BadStatus int ->
-                                        "Bad status response from server"
-
-                                    Http.BadBody string ->
-                                        "Bad body response from server: " ++ string
-                        in
-                        viewFetchError errorMessage
-
-                    Success data ->
-                        if model.showWords then
-                            viewWords data.words
-
-                        else
-                            viewTranslator model
+                  else
+                    viewTranslator model
                 ]
             ]
-        ]
-
-
-viewNotReady : String -> Html Msg
-viewNotReady message =
-    p [ class "p-3" ] [ text message ]
-
-
-viewFetchError : String -> Html Msg
-viewFetchError message =
-    div
-        [ class "p-3" ]
-        [ p [] [ text message ]
         ]
 
 
@@ -134,8 +91,8 @@ viewOutput val =
 -- WORDS LIST
 
 
-viewWords : List Word -> Html Msg
-viewWords words =
+viewWords : Html Msg
+viewWords =
     div []
         [ div [ class "text-right" ]
             [ button [ class "btn btn-sm btn-danger mb-2", onClick ToggleWords ] [ text "Close" ]
@@ -144,8 +101,8 @@ viewWords words =
             [ class "table table-striped p-3" ]
             [ thead []
                 [ tr []
-                    [ th [] [ text "English" ]
-                    , th [] [ text "Bohdi" ]
+                    [ th [] [ text "Bohdilang" ]
+                    , th [] [ text "English" ]
                     ]
                 ]
             , tbody []
@@ -157,6 +114,6 @@ viewWords words =
 viewWordRow : Word -> Html Msg
 viewWordRow word =
     tr []
-        [ td [] [ text word.en ]
-        , td [] [ text word.bd ]
+        [ td [] [ text (Tuple.first word) ]
+        , td [] [ text (Tuple.second word) ]
         ]

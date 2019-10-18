@@ -3,14 +3,13 @@ module Main exposing (..)
 import Browser
 import Helpers exposing (..)
 import List.Extra
-import RemoteData exposing (RemoteData(..))
 import Types exposing (..)
 import Views exposing (view)
 
 
-init : Flags -> ( Model, Cmd Msg )
-init flags =
-    ( Model flags 0 [] NotAsked "" "" False, getData flags.url )
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Model 0 [] "" "" False, Cmd.none )
 
 
 
@@ -20,9 +19,6 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GotData data ->
-            ( { model | data = data }, Cmd.none )
-
         Restart ->
             ( { model | input = "", output = "", score = 0 }, Cmd.none )
 
@@ -39,22 +35,14 @@ update msg model =
 
         Translate input ->
             let
-                words =
-                    case model.data of
-                        Success decodedData ->
-                            decodedData.words
-
-                        _ ->
-                            []
-
                 output =
-                    case findEnTranslationFor words input of
+                    case findTranslationFor input of
                         Just found ->
-                            if hasWordBeenCompleted model.completedWords found.en then
+                            if hasWordBeenCompleted model.completedWords (Tuple.second found) then
                                 ""
 
                             else
-                                found.en
+                                Tuple.second found
 
                         Nothing ->
                             ""
