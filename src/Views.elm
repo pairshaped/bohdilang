@@ -68,7 +68,17 @@ viewTranslator model =
                 [ text "Restart" ]
             , div [ class "mt-2" ] [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Cheat!" ] ]
             ]
+        , viewCompletedWords model.completedWords
         ]
+
+
+viewCompletedWords : List String -> Html Msg
+viewCompletedWords completedWords =
+    let
+        viewCompletedWord word =
+            div [ class "text-success", style "text-decoration" "line-through" ] [ text word ]
+    in
+    div [ class "mt-4" ] (List.map viewCompletedWord completedWords)
 
 
 viewInput : String -> Html Msg
