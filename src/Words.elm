@@ -23,7 +23,7 @@ words =
     , ( "Matatata", "Hi" )
     , ( "Tamamama", "High" )
     , ( "Toff", "Mom" )
-    , ( "Kell", "Cool Dad" )
+    , ( "Kell", "Amazing Dad" )
     , ( "Swop", "Play" )
     , ( "Pel", "Nolan" )
     , ( "Cep", "Zion" )
