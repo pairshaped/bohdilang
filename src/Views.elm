@@ -1,7 +1,7 @@
 module Views exposing (view)
 
 import Helpers exposing (..)
-import Html exposing (Html, button, div, h1, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
+import Html exposing (Html, br, button, div, h1, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, style, type_, value)
 import Html.Events exposing (onBlur, onClick, onInput)
 import Http
@@ -53,22 +53,21 @@ viewTranslator model =
             , span [] [ text " every time you enter a Bohdi word correctly." ]
             ]
         , p []
-            [ span [] [ text "Using the cheat button will show you the list words... but you will " ]
+            [ span [] [ text "Using the help button will show you the list words... but you will " ]
             , span [ class "text-danger" ] [ text "lose 2 points." ]
             ]
-        , p [ class "d-flex mt-2" ]
+        , p [ class "mt-2 row" ]
             [ viewInput model.input
             , viewOutput model.output
             ]
         , div [ class "d-flex justify-content-between" ]
-            [ button
-                [ class "mt-2 btn btn-secondary"
-                , onClick Restart
+            [ viewCompletedWords model.completedWords
+            , div []
+                [ button [ class "mt-2 btn btn-danger", onClick ToggleWords ] [ text "Help!" ]
+                , br [] []
+                , button [ class "mt-4 btn btn-secondary", onClick Restart ] [ text "Restart" ]
                 ]
-                [ text "Restart" ]
-            , div [ class "mt-2" ] [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Cheat!" ] ]
             ]
-        , viewCompletedWords model.completedWords
         ]
 
 
@@ -83,7 +82,9 @@ viewCompletedWords completedWords =
 
 viewInput : String -> Html Msg
 viewInput val =
-    input [ type_ "search", class "mr-3 form-control", style "max-width" "200px", placeholder "Bodi word...", value val, onInput Translate ] []
+    div [ class "col" ]
+        [ input [ type_ "search", class "mr-3 form-control", style "max-width" "200px", placeholder "Bodi word...", value val, onInput Translate ] []
+        ]
 
 
 viewOutput : String -> Html Msg
@@ -96,7 +97,9 @@ viewOutput val =
             else
                 " border-success bg-success text-white"
     in
-    input [ class ("form-control" ++ validClass), style "max-width" "200px", placeholder "Result...", disabled True, value val ] []
+    div [ onClick ClearInput, class "col", style "margin-left" "-20px" ]
+        [ input [ class ("form-control" ++ validClass), style "max-width" "200px", placeholder "Result...", disabled True, value val ] []
+        ]
 
 
 

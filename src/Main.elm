@@ -19,6 +19,9 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ClearInput ->
+            ( { model | input = "", output = "" }, Cmd.none )
+
         Restart ->
             ( { model | input = "", output = "", score = 0, completedWords = [] }, Cmd.none )
 

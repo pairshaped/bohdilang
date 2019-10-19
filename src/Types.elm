@@ -3,6 +3,7 @@ module Types exposing (..)
 
 type Msg
     = Translate String
+    | ClearInput
     | Restart
     | ToggleWords
 
