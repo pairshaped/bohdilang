@@ -111,4 +111,10 @@ words =
     , ( "Dufty", "Clothes" )
     , ( "Pimpempum", "Laser" )
     , ( "Vionlly", "Cake" )
+    , ( "Napalay", "Cool" )
+    , ( "Pozeep", "What" )
+    , ( "Mina", "Let" )
+    , ( "Trimp", "Die" )
+    , ( "Cla", "Punch" )
+    , ( "Macasal", "Type" )
     ]
