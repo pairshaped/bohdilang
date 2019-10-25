@@ -2,17 +2,18 @@ module Types exposing (..)
 
 
 type Msg
-    = Translate String
-    | ClearInput
-    | Restart
+    = Restart
     | ToggleWords
+    | NextQuestion (List Int)
+    | Answer (Maybe Word)
 
 
 type alias Model =
-    { score : Int
-    , completedWords : List String
-    , input : String
-    , output : String
+    { right : Bool
+    , wrong : Bool
+    , score : Int
+    , question : Maybe Word
+    , answers : List (Maybe Word)
     , showWords : Bool
     }
 

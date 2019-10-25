@@ -1,15 +1,16 @@
 module Main exposing (..)
 
 import Browser
-import Helpers exposing (..)
 import List.Extra
+import Random
 import Types exposing (..)
 import Views exposing (view)
+import Words exposing (words)
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model 0 [] "" "" False, Cmd.none )
+    ( Model False False 0 Nothing [] False, Random.generate NextQuestion (Random.list 4 (Random.int 0 (List.length words))) )
 
 
 
@@ -19,11 +20,8 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ClearInput ->
-            ( { model | input = "", output = "" }, Cmd.none )
-
         Restart ->
-            ( { model | input = "", output = "", score = 0, completedWords = [] }, Cmd.none )
+            ( { model | question = Nothing, answers = [], score = 0 }, Cmd.none )
 
         ToggleWords ->
             let
@@ -36,35 +34,40 @@ update msg model =
             in
             ( { model | showWords = not model.showWords, score = score }, Cmd.none )
 
-        Translate input ->
+        NextQuestion numbers ->
             let
-                output =
-                    case findTranslationFor input of
-                        Just found ->
-                            if hasWordBeenCompleted model.completedWords (Tuple.second found) then
-                                ""
-
-                            else
-                                Tuple.second found
+                question =
+                    case List.head numbers of
+                        Just index ->
+                            List.Extra.getAt index words
 
                         Nothing ->
-                            ""
+                            model.question
+
+                answer index =
+                    List.Extra.getAt index words
+
+                answers =
+                    List.map answer numbers
+            in
+            ( { model | question = question, answers = answers }, Cmd.none )
+
+        Answer word ->
+            let
+                right =
+                    word == model.question
+
+                wrong =
+                    not right
 
                 score =
-                    if output /= "" then
+                    if right then
                         model.score + 1
 
                     else
                         model.score
-
-                completedWords =
-                    if output /= "" then
-                        output :: model.completedWords
-
-                    else
-                        model.completedWords
             in
-            ( { model | input = input, output = output, score = score, completedWords = completedWords }, Cmd.none )
+            ( { model | right = right, wrong = wrong, score = score }, Random.generate NextQuestion (Random.list 4 (Random.int 0 (List.length words - 1))) )
 
 
 

@@ -1,6 +1,5 @@
 module Views exposing (view)
 
-import Helpers exposing (..)
 import Html exposing (Html, br, button, div, h1, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, style, type_, value)
 import Html.Events exposing (onBlur, onClick, onInput)
@@ -50,56 +49,75 @@ viewTranslator model =
         , p [ class "mt-2" ]
             [ span [] [ text "You " ]
             , span [ class "text-success" ] [ text "get a point" ]
-            , span [] [ text " every time you enter a Bohdi word correctly." ]
+            , span [] [ text " every time you guess the correct Bohdi word." ]
+            ]
+        , viewMessage model
+        , p []
+            [ viewQuestion model.question
+            , viewAnswers model.answers
             ]
         , p []
             [ span [] [ text "Using the help button will show you the list words... but you will " ]
             , span [ class "text-danger" ] [ text "lose 2 points." ]
             ]
-        , p [ class "mt-2 row" ]
-            [ viewInput model.input
-            , viewOutput model.output
-            ]
-        , div [ class "d-flex justify-content-between" ]
-            [ viewCompletedWords model.completedWords
-            , div []
-                [ button [ class "mt-2 btn btn-danger", onClick ToggleWords ] [ text "Help!" ]
-                , br [] []
-                , button [ class "mt-4 btn btn-secondary", onClick Restart ] [ text "Restart" ]
-                ]
+        , div [ class "mt-2 d-flex justify-content-between" ]
+            [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Help!" ]
+            , button [ class "btn btn-secondary", onClick Restart ] [ text "Restart" ]
             ]
         ]
 
 
-viewCompletedWords : List String -> Html Msg
-viewCompletedWords completedWords =
+viewMessage : Model -> Html Msg
+viewMessage model =
     let
-        viewCompletedWord word =
-            div [ class "text-success", style "text-decoration" "line-through" ] [ text word ]
-    in
-    div [ class "mt-4" ] (List.map viewCompletedWord completedWords)
+        message =
+            if model.right then
+                span [ class "text-success" ] [ text "Correct!" ]
 
-
-viewInput : String -> Html Msg
-viewInput val =
-    div [ class "col" ]
-        [ input [ type_ "search", class "mr-3 form-control", style "max-width" "200px", placeholder "Bodi word...", value val, onInput Translate ] []
-        ]
-
-
-viewOutput : String -> Html Msg
-viewOutput val =
-    let
-        validClass =
-            if val == "" then
-                ""
+            else if model.wrong then
+                span [ class "text-danger" ] [ text "Nope!" ]
 
             else
-                " border-success bg-success text-white"
+                span [] []
     in
-    div [ onClick ClearInput, class "col", style "margin-left" "-20px" ]
-        [ input [ class ("form-control" ++ validClass), style "max-width" "200px", placeholder "Result...", disabled True, value val ] []
+    div [ class "text-center" ] [ message ]
+
+
+viewQuestion : Maybe Word -> Html Msg
+viewQuestion question =
+    div [ class "row mb-2" ]
+        [ h1 [ class "m-3 p-2 text-center text-white bg-dark", style "width" "100%" ]
+            [ text
+                (case question of
+                    Just word ->
+                        Tuple.second word
+
+                    Nothing ->
+                        "Nothing"
+                )
+            ]
         ]
+
+
+viewAnswers : List (Maybe Word) -> Html Msg
+viewAnswers answers =
+    let
+        viewAnswer answer =
+            div [ class "col-6 text-center mb-3" ]
+                [ button [ class "btn btn-primary", style "width" "150px", onClick (Answer answer) ]
+                    [ text
+                        (case answer of
+                            Just word ->
+                                Tuple.first word
+
+                            Nothing ->
+                                "Nothing"
+                        )
+                    ]
+                ]
+    in
+    div [ class "row" ]
+        (List.map viewAnswer answers)
 
 
 
