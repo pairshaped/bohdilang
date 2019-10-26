@@ -100,7 +100,7 @@ viewQuestionAndAnswers model =
                 [ style "max-width" "320px"
                 , src
                     (if model.score >= 20 then
-                        "https://media.giphy.com/media/Ahc7mPykJeZd6/giphy.gif"
+                        "https://media.giphy.com/media/3oJpyi7wBpo0sV9V9C/giphy.gif"
 
                      else if model.score >= 15 then
                         "https://media.giphy.com/media/b0VK26c9Ne0ak/giphy.gif"
