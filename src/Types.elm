@@ -26,5 +26,10 @@ type alias WordAnswered =
     }
 
 
+gameLength : Int
+gameLength =
+    20
+
+
 type alias Word =
     ( String, String )

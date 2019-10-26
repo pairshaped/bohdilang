@@ -63,7 +63,7 @@ update msg model =
                             Nothing
 
                 finished =
-                    List.length model.wordsAnswered >= 20
+                    List.length model.wordsAnswered >= gameLength
 
                 correct =
                     if finished then

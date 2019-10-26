@@ -71,7 +71,7 @@ viewQuestionAndAnswers model =
     if model.finished then
         div [ class "text-center mb-4" ]
             [ p []
-                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of 20, making you:") ]
+                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of " ++ String.fromInt gameLength ++ ", making you:") ]
             , h3
                 [ class "text-center mb-4 text-success" ]
                 [ text
@@ -118,7 +118,7 @@ viewQuestionAndAnswers model =
             [ p [ class "mt-2" ]
                 [ span [] [ text "You " ]
                 , span [ class "text-success" ] [ text "get a point" ]
-                , span [] [ text (" every time you guess the correct Bohdi word. " ++ String.fromInt (20 - List.length model.wordsAnswered) ++ " questions left.") ]
+                , span [] [ text (" every time you guess the correct Bohdi word. " ++ String.fromInt (gameLength - List.length model.wordsAnswered) ++ " questions left.") ]
                 ]
             , p []
                 [ viewQuestion model.question
