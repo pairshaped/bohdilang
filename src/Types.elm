@@ -10,12 +10,19 @@ type Msg
 
 type alias Model =
     { wordsRemaining : List Word
+    , wordsAnswered : List WordAnswered
     , correct : Maybe Bool
     , score : Int
     , question : Maybe Word
     , answers : List (Maybe Word)
     , showWords : Bool
     , finished : Bool
+    }
+
+
+type alias WordAnswered =
+    { word : Word
+    , correct : Bool
     }
 
 

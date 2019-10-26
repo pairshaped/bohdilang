@@ -1,7 +1,7 @@
 module Views exposing (view)
 
-import Html exposing (Html, br, button, div, h1, h2, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, style, type_, value)
+import Html exposing (Html, br, button, div, h1, h3, hr, img, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
+import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, src, style, type_, value)
 import Html.Events exposing (onBlur, onClick, onInput)
 import Http
 import Types exposing (..)
@@ -62,13 +62,98 @@ viewTranslator model =
             [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Help!" ]
             , button [ class "btn btn-secondary", onClick Restart ] [ text "Restart" ]
             ]
+        , viewWordsAnswered model.wordsAnswered
         ]
 
 
 viewQuestionAndAnswers : Model -> Html Msg
 viewQuestionAndAnswers model =
-    if model.finished then
-        p [] [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of a possible " ++ String.fromInt (List.length words - 4) ++ ".") ]
+    if not model.finished then
+        div [ class "text-center mb-4" ]
+            [ p []
+                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of a " ++ String.fromInt (List.length words - 4) ++ ", granting the title of:") ]
+            , h3
+                [ class "text-center mb-4 text-success" ]
+                [ text
+                    (if model.score >= 80 then
+                        "Bohdi!"
+
+                     else if model.score >= 70 then
+                        "Impossible"
+
+                     else if model.score >= 60 then
+                        "Incredible"
+
+                     else if model.score >= 55 then
+                        "Professional"
+
+                     else if model.score >= 50 then
+                        "Genius"
+
+                     else if model.score >= 45 then
+                        "Robot"
+
+                     else if model.score >= 40 then
+                        "Iron Man"
+
+                     else if model.score >= 35 then
+                        "Batman"
+
+                     else if model.score >= 30 then
+                        "Thor"
+
+                     else if model.score >= 25 then
+                        "Beast Boy"
+
+                     else if model.score >= 20 then
+                        "Noob"
+
+                     else
+                        "Facepalm"
+                    )
+                ]
+            , img
+                [ style "max-width" "320px"
+                , src
+                    (if model.score >= 80 then
+                        "https://media.giphy.com/media/KVVgzFKIlqBqx0OFIw/giphy.gif"
+
+                     else if model.score >= 70 then
+                        "https://media.giphy.com/media/3oz8xODcLLAxb8Qyju/giphy.gif"
+
+                     else if model.score >= 60 then
+                        "https://media.giphy.com/media/Ahc7mPykJeZd6/giphy.gif"
+
+                     else if model.score >= 55 then
+                        "http://giphygifs.s3.amazonaws.com/media/MIY4jpusckRmU/giphy.gif"
+
+                     else if model.score >= 50 then
+                        "https://media.giphy.com/media/ZThQqlxY5BXMc/giphy.gif"
+
+                     else if model.score >= 45 then
+                        "http://giphygifs.s3.amazonaws.com/media/mIZ9rPeMKefm0/giphy.gif"
+
+                     else if model.score >= 40 then
+                        "https://media.giphy.com/media/VFB3cJJne7b5m/giphy.gif"
+
+                     else if model.score >= 35 then
+                        "https://media.giphy.com/media/b0VK26c9Ne0ak/giphy.gif"
+
+                     else if model.score >= 30 then
+                        "http://giphygifs.s3.amazonaws.com/media/EOfarA6ZUqzZu/giphy.gif"
+
+                     else if model.score >= 25 then
+                        "https://media.giphy.com/media/gITcVXdRU7KQrSPFqV/giphy.gif"
+
+                     else if model.score >= 20 then
+                        "http://giphygifs.s3.amazonaws.com/media/B5d2dU1ZrhvA4/giphy.gif"
+
+                     else
+                        "http://giphygifs.s3.amazonaws.com/media/14aUO0Mf7dWDXW/giphy.gif"
+                    )
+                ]
+                []
+            ]
 
     else
         div []
@@ -123,6 +208,36 @@ viewAnswers answers =
     in
     div [ class "row" ]
         (List.map viewAnswer answers)
+
+
+viewWordsAnswered : List WordAnswered -> Html Msg
+viewWordsAnswered wordsAnswered =
+    div
+        [ class "mt-4" ]
+        (List.map viewWordAnswered wordsAnswered)
+
+
+viewWordAnswered : WordAnswered -> Html Msg
+viewWordAnswered wordAnswered =
+    let
+        answerClass =
+            if wordAnswered.correct then
+                "text-success font-weight-bold"
+
+            else
+                "text-danger font-weight-lighter"
+
+        translation =
+            if wordAnswered.correct then
+                Tuple.first wordAnswered.word
+
+            else
+                "-"
+    in
+    div [ class ("row " ++ answerClass) ]
+        [ div [ class "col-6" ] [ text (Tuple.second wordAnswered.word) ]
+        , div [ class "col-6" ] [ text translation ]
+        ]
 
 
 

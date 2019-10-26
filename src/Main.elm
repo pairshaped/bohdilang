@@ -10,7 +10,7 @@ import Words exposing (words)
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model words Nothing 0 Nothing [] False False, Random.generate NextQuestion (randomize words) )
+    ( Model words [] Nothing 0 Nothing [] False False, Random.generate NextQuestion (randomize words) )
 
 
 
@@ -88,18 +88,36 @@ update msg model =
                             model.score
 
                 filterWord w =
-                    case word of
-                        Just onWord ->
-                            w == onWord
+                    case model.question of
+                        Just question ->
+                            w /= question
 
                         Nothing ->
                             False
 
                 wordsRemaining =
-                    List.Extra.filterNot filterWord model.wordsRemaining
+                    List.filter filterWord model.wordsRemaining
+
+                wordsAnswered =
+                    case model.question of
+                        Just question ->
+                            List.append
+                                model.wordsAnswered
+                                [ WordAnswered question
+                                    (case correct of
+                                        Just cor ->
+                                            cor
+
+                                        Nothing ->
+                                            False
+                                    )
+                                ]
+
+                        Nothing ->
+                            model.wordsAnswered
             in
-            ( { model | wordsRemaining = wordsRemaining, correct = correct, score = score }
-            , Random.generate NextQuestion (randomize model.wordsRemaining)
+            ( { model | wordsAnswered = wordsAnswered, wordsRemaining = wordsRemaining, correct = correct, score = score }
+            , Random.generate NextQuestion (randomize wordsRemaining)
             )
 
 
