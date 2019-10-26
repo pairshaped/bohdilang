@@ -29,10 +29,10 @@ update msg model =
             let
                 score =
                     if answer == "Good Looking" then
-                        100
+                        1000
 
                     else
-                        0
+                        -1000
             in
             ( { model | score = score }, Cmd.none )
 

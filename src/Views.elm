@@ -71,7 +71,7 @@ viewQuestionAndAnswers model =
     if model.finished then
         div [ class "text-center mb-4" ]
             [ p []
-                [ if model.score > 0 && model.score <= 20 then
+                [ if model.score == 20 then
                     viewDadQuestion
 
                   else
