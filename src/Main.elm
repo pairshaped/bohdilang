@@ -25,6 +25,17 @@ update msg model =
             , Random.generate NextQuestion (randomize model.wordsRemaining)
             )
 
+        DadAnswer answer ->
+            let
+                score =
+                    if answer == "Good Looking" then
+                        100
+
+                    else
+                        0
+            in
+            ( { model | score = score }, Cmd.none )
+
         ToggleWords ->
             let
                 score =

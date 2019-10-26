@@ -71,7 +71,12 @@ viewQuestionAndAnswers model =
     if model.finished then
         div [ class "text-center mb-4" ]
             [ p []
-                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of " ++ String.fromInt gameLength ++ ", making you:") ]
+                [ if model.score > 0 && model.score <= 20 then
+                    viewDadQuestion
+
+                  else
+                    text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of " ++ String.fromInt gameLength ++ ", making you:")
+                ]
             , h3
                 [ class "text-center mb-4 text-success" ]
                 [ text
@@ -129,6 +134,25 @@ viewQuestionAndAnswers model =
                 , span [ class "text-danger" ] [ text "lose 2 points." ]
                 ]
             ]
+
+
+viewDadQuestion : Html Msg
+viewDadQuestion =
+    let
+        viewDadAnswer answer =
+            div [ class "col-6 text-center mb-3" ]
+                [ button [ class "btn btn-primary", style "width" "150px", onClick (DadAnswer answer) ]
+                    [ text answer ]
+                ]
+    in
+    div []
+        [ div [ class "row mb-2" ]
+            [ h1 [ class "m-3 p-2 text-center text-white bg-dark", style "width" "100%" ]
+                [ text "My Dad is..." ]
+            ]
+        , div [ class "row" ]
+            (List.map viewDadAnswer [ "Good Looking", "Stinky", "Dumb", "Annoying" ])
+        ]
 
 
 viewQuestion : Maybe Word -> Html Msg

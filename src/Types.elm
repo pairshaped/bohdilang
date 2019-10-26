@@ -6,6 +6,7 @@ type Msg
     | ToggleWords
     | NextQuestion (List Int)
     | Answer (Maybe Word)
+    | DadAnswer String
 
 
 type alias Model =
