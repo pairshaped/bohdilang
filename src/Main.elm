@@ -63,7 +63,7 @@ update msg model =
                             Nothing
 
                 finished =
-                    List.length model.wordsRemaining < 4
+                    List.length model.wordsRemaining <= 4
 
                 correct =
                     if finished then
