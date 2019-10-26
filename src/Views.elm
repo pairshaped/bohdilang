@@ -68,7 +68,7 @@ viewTranslator model =
 
 viewQuestionAndAnswers : Model -> Html Msg
 viewQuestionAndAnswers model =
-    if not model.finished then
+    if model.finished then
         div [ class "text-center mb-4" ]
             [ p []
                 [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of a " ++ String.fromInt (List.length words - 4) ++ ", granting the title of:") ]
