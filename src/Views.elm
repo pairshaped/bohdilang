@@ -146,7 +146,7 @@ viewQuestionAndAnswers model =
                         "https://media.giphy.com/media/gITcVXdRU7KQrSPFqV/giphy.gif"
 
                      else if model.score >= 20 then
-                        "http://giphygifs.s3.amazonaws.com/media/B5d2dU1ZrhvA4/giphy.gif"
+                        "http://giphygifs.s3.amazonaws.com/media/LnKa2WLkd6eAM/giphy.gif"
 
                      else
                         "http://giphygifs.s3.amazonaws.com/media/14aUO0Mf7dWDXW/giphy.gif"
