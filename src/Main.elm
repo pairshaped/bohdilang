@@ -21,7 +21,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Restart ->
-            ( { model | wordsRemaining = words, question = Nothing, answers = [], finished = False, score = 0, correct = Nothing }
+            ( { model | wordsRemaining = words, wordsAnswered = [], question = Nothing, answers = [], finished = False, score = 0, correct = Nothing }
             , Random.generate NextQuestion (randomize model.wordsRemaining)
             )
 
@@ -63,7 +63,7 @@ update msg model =
                             Nothing
 
                 finished =
-                    List.length model.wordsRemaining <= 4
+                    List.length model.wordsAnswered >= 20
 
                 correct =
                     if finished then

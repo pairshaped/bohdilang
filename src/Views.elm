@@ -71,41 +71,20 @@ viewQuestionAndAnswers model =
     if model.finished then
         div [ class "text-center mb-4" ]
             [ p []
-                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of a " ++ String.fromInt (List.length words - 4) ++ ", granting the title of:") ]
+                [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of 20, making you:") ]
             , h3
                 [ class "text-center mb-4 text-success" ]
                 [ text
-                    (if model.score >= 80 then
-                        "Bohdi!"
+                    (if model.score >= 20 then
+                        "Master Bohdi"
 
-                     else if model.score >= 70 then
-                        "Impossible"
-
-                     else if model.score >= 60 then
-                        "Incredible"
-
-                     else if model.score >= 55 then
-                        "Professional"
-
-                     else if model.score >= 50 then
-                        "Genius"
-
-                     else if model.score >= 45 then
-                        "Robot"
-
-                     else if model.score >= 40 then
-                        "Iron Man"
-
-                     else if model.score >= 35 then
+                     else if model.score >= 15 then
                         "Batman"
 
-                     else if model.score >= 30 then
-                        "Thor"
-
-                     else if model.score >= 25 then
+                     else if model.score >= 10 then
                         "Beast Boy"
 
-                     else if model.score >= 20 then
+                     else if model.score >= 5 then
                         "Noob"
 
                      else
@@ -115,37 +94,16 @@ viewQuestionAndAnswers model =
             , img
                 [ style "max-width" "320px"
                 , src
-                    (if model.score >= 80 then
-                        "https://media.giphy.com/media/KVVgzFKIlqBqx0OFIw/giphy.gif"
-
-                     else if model.score >= 70 then
-                        "https://media.giphy.com/media/3oz8xODcLLAxb8Qyju/giphy.gif"
-
-                     else if model.score >= 60 then
+                    (if model.score >= 20 then
                         "https://media.giphy.com/media/Ahc7mPykJeZd6/giphy.gif"
 
-                     else if model.score >= 55 then
-                        "http://giphygifs.s3.amazonaws.com/media/MIY4jpusckRmU/giphy.gif"
-
-                     else if model.score >= 50 then
-                        "https://media.giphy.com/media/ZThQqlxY5BXMc/giphy.gif"
-
-                     else if model.score >= 45 then
-                        "http://giphygifs.s3.amazonaws.com/media/mIZ9rPeMKefm0/giphy.gif"
-
-                     else if model.score >= 40 then
-                        "https://media.giphy.com/media/VFB3cJJne7b5m/giphy.gif"
-
-                     else if model.score >= 35 then
+                     else if model.score >= 15 then
                         "https://media.giphy.com/media/b0VK26c9Ne0ak/giphy.gif"
 
-                     else if model.score >= 30 then
-                        "http://giphygifs.s3.amazonaws.com/media/EOfarA6ZUqzZu/giphy.gif"
-
-                     else if model.score >= 25 then
+                     else if model.score >= 10 then
                         "https://media.giphy.com/media/gITcVXdRU7KQrSPFqV/giphy.gif"
 
-                     else if model.score >= 20 then
+                     else if model.score >= 5 then
                         "http://giphygifs.s3.amazonaws.com/media/LnKa2WLkd6eAM/giphy.gif"
 
                      else
@@ -160,7 +118,7 @@ viewQuestionAndAnswers model =
             [ p [ class "mt-2" ]
                 [ span [] [ text "You " ]
                 , span [ class "text-success" ] [ text "get a point" ]
-                , span [] [ text (" every time you guess the correct Bohdi word. " ++ String.fromInt (List.length model.wordsRemaining - 4) ++ " words left.") ]
+                , span [] [ text (" every time you guess the correct Bohdi word. " ++ String.fromInt (20 - List.length model.wordsAnswered) ++ " questions left.") ]
                 ]
             , p []
                 [ viewQuestion model.question
