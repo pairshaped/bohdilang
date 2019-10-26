@@ -10,7 +10,7 @@ import Words exposing (words)
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model False False 0 Nothing [] False, Random.generate NextQuestion (Random.list 4 (Random.int 0 (List.length words))) )
+    ( Model words Nothing 0 Nothing [] False False, Random.generate NextQuestion (randomize words) )
 
 
 
@@ -21,7 +21,9 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Restart ->
-            ( { model | question = Nothing, answers = [], score = 0 }, Cmd.none )
+            ( { model | wordsRemaining = words, question = Nothing, answers = [], finished = False, score = 0, correct = Nothing }
+            , Random.generate NextQuestion (randomize model.wordsRemaining)
+            )
 
         ToggleWords ->
             let
@@ -34,40 +36,89 @@ update msg model =
             in
             ( { model | showWords = not model.showWords, score = score }, Cmd.none )
 
-        NextQuestion numbers ->
+        NextQuestion randomIndexes ->
             let
-                question =
-                    case List.head numbers of
-                        Just index ->
-                            List.Extra.getAt index words
-
-                        Nothing ->
-                            model.question
-
                 answer index =
-                    List.Extra.getAt index words
+                    List.Extra.getAt index model.wordsRemaining
 
                 answers =
-                    List.map answer numbers
+                    case List.tail randomIndexes of
+                        Just tail ->
+                            List.map answer tail
+
+                        Nothing ->
+                            model.answers
+
+                question =
+                    case List.head randomIndexes of
+                        Just head ->
+                            case List.Extra.getAt head answers of
+                                Just word ->
+                                    word
+
+                                Nothing ->
+                                    Nothing
+
+                        Nothing ->
+                            Nothing
+
+                finished =
+                    List.length model.wordsRemaining < 4
+
+                correct =
+                    if finished then
+                        Nothing
+
+                    else
+                        model.correct
             in
-            ( { model | question = question, answers = answers }, Cmd.none )
+            ( { model | question = question, answers = answers, finished = finished, correct = correct }, Cmd.none )
 
         Answer word ->
             let
-                right =
-                    word == model.question
-
-                wrong =
-                    not right
+                correct =
+                    Just (word == model.question)
 
                 score =
-                    if right then
-                        model.score + 1
+                    case correct of
+                        Just True ->
+                            model.score + 1
 
-                    else
-                        model.score
+                        _ ->
+                            model.score
+
+                filterWord w =
+                    case word of
+                        Just onWord ->
+                            w == onWord
+
+                        Nothing ->
+                            False
+
+                wordsRemaining =
+                    List.Extra.filterNot filterWord model.wordsRemaining
             in
-            ( { model | right = right, wrong = wrong, score = score }, Random.generate NextQuestion (Random.list 4 (Random.int 0 (List.length words - 1))) )
+            ( { model | wordsRemaining = wordsRemaining, correct = correct, score = score }
+            , Random.generate NextQuestion (randomize model.wordsRemaining)
+            )
+
+
+randomize : List Word -> Random.Generator (List Int)
+randomize wordsRemaining =
+    Random.map2
+        (\x y -> List.append x y)
+        randomQuestionIndex
+        (randomAnswerIndeces wordsRemaining)
+
+
+randomQuestionIndex : Random.Generator (List Int)
+randomQuestionIndex =
+    Random.list 1 (Random.int 0 3)
+
+
+randomAnswerIndeces : List Word -> Random.Generator (List Int)
+randomAnswerIndeces wordsRemaining =
+    Random.list 4 (Random.int 0 (List.length wordsRemaining - 1))
 
 
 

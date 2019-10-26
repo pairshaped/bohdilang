@@ -1,6 +1,6 @@
 module Views exposing (view)
 
-import Html exposing (Html, br, button, div, h1, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
+import Html exposing (Html, br, button, div, h1, h2, hr, input, label, option, p, span, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (class, disabled, href, id, max, min, placeholder, style, type_, value)
 import Html.Events exposing (onBlur, onClick, onInput)
 import Http
@@ -39,27 +39,25 @@ viewTranslator model =
 
             else
                 "secondary"
+
+        titleClass =
+            case model.correct of
+                Just True ->
+                    "success"
+
+                Just False ->
+                    "danger"
+
+                Nothing ->
+                    "warning"
     in
     div []
         [ div
             [ class "d-flex justify-content-between mb-3" ]
-            [ h1 [ class "text-warning" ] [ text "Bohdilang" ]
+            [ h1 [ class ("text-" ++ titleClass) ] [ text "Bohdilang" ]
             , h1 [ class ("border pl-2 pr-2 text-" ++ scoreClass) ] [ text (String.fromInt model.score) ]
             ]
-        , p [ class "mt-2" ]
-            [ span [] [ text "You " ]
-            , span [ class "text-success" ] [ text "get a point" ]
-            , span [] [ text " every time you guess the correct Bohdi word." ]
-            ]
-        , viewMessage model
-        , p []
-            [ viewQuestion model.question
-            , viewAnswers model.answers
-            ]
-        , p []
-            [ span [] [ text "Using the help button will show you the list words... but you will " ]
-            , span [ class "text-danger" ] [ text "lose 2 points." ]
-            ]
+        , viewQuestionAndAnswers model
         , div [ class "mt-2 d-flex justify-content-between" ]
             [ button [ class "btn btn-danger", onClick ToggleWords ] [ text "Help!" ]
             , button [ class "btn btn-secondary", onClick Restart ] [ text "Restart" ]
@@ -67,20 +65,27 @@ viewTranslator model =
         ]
 
 
-viewMessage : Model -> Html Msg
-viewMessage model =
-    let
-        message =
-            if model.right then
-                span [ class "text-success" ] [ text "Correct!" ]
+viewQuestionAndAnswers : Model -> Html Msg
+viewQuestionAndAnswers model =
+    if model.finished then
+        p [] [ text ("Thanks for playing! Your score is " ++ String.fromInt model.score ++ " out of a possible " ++ String.fromInt (List.length words - 4) ++ ".") ]
 
-            else if model.wrong then
-                span [ class "text-danger" ] [ text "Nope!" ]
-
-            else
-                span [] []
-    in
-    div [ class "text-center" ] [ message ]
+    else
+        div []
+            [ p [ class "mt-2" ]
+                [ span [] [ text "You " ]
+                , span [ class "text-success" ] [ text "get a point" ]
+                , span [] [ text (" every time you guess the correct Bohdi word. " ++ String.fromInt (List.length model.wordsRemaining - 4) ++ " words left.") ]
+                ]
+            , p []
+                [ viewQuestion model.question
+                , viewAnswers model.answers
+                ]
+            , p []
+                [ span [] [ text "Using the help button will show you the list words... but you will " ]
+                , span [ class "text-danger" ] [ text "lose 2 points." ]
+                ]
+            ]
 
 
 viewQuestion : Maybe Word -> Html Msg
